@@ -16,8 +16,8 @@ func ModifyPwd(db *sql.DB, username, password string) (err error) {
 	return err
 }
 
-// GetAuthID -
-func GetAuthID(db *sql.DB, username, password string) (id int, err error) {
-	err = db.QueryRow("SELECT id FROM auths WHERE username = ? AND password = ?", username, password).Scan(&id)
-	return id, err
+// GetAuthIDAndPwd -
+func GetAuthIDAndPwd(db *sql.DB, username string) (id int, password string, err error) {
+	err = db.QueryRow("SELECT id, password FROM auths WHERE username = ? ", username).Scan(&id, &password)
+	return id, password, err
 }

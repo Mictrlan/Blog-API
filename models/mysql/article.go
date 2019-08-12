@@ -13,23 +13,23 @@ type Article struct {
 	Desc      string
 	Content   string
 	CreatedBy string
-	CreatedOn int
+	CreatedOn string
 	UpdatedBy string
-	UpdatedOn int
+	UpdatedOn string
 	State     bool
 	DeletedOn int
 }
 
 // AddArticle -
 func AddArticle(db *sql.DB, tagID int, title, description, content, createdBy string) (err error) {
-	_, err = db.Exec("INSERT INTO articles(tagID,title,description,content,created_by)VALUES(?,?,?,?,?)",
+	_, err = db.Exec("INSERT INTO articles(tag_id,title,description,content,created_by)VALUES(?,?,?,?,?)",
 		tagID, title, description, content, createdBy)
 	return err
 }
 
 // SoftDeleteArticle -
 func SoftDeleteArticle(db *sql.DB, id int) (err error) {
-	_, err = db.Exec("UPDATE articles SET state = false, delete_on = ? WHERE id = ?", time.Now().Unix(), id)
+	_, err = db.Exec("UPDATE articles SET state = false, deleted_on = ? WHERE id = ?", time.Now().Unix(), id)
 	return err
 }
 
@@ -41,17 +41,18 @@ func HardDeleteArticle(db *sql.DB, id int) (err error) {
 
 // EditArticle -
 func EditArticle(db *sql.DB, id, tagID int, title, description, content, updatedBy string) (err error) {
-	_, err = db.Exec("UPDATE articles SET tag_id = ?,title = ?, descroption = ?, content = ?, updated_by = ?",
-		id, tagID, title, description, content, updatedBy)
+	_, err = db.Exec("UPDATE articles SET tag_id = ?,title = ?, description = ?, content = ?, updated_by = ? WHERE id = ?",
+		tagID, title, description, content, updatedBy, id)
 	return err
 }
 
 // GetArticleByID -
-func GetArticleByID(db *sql.DB, id int) (result []interface{}, err error) {
-	var articles Article
-	var tags Tag
-
-	if err = db.QueryRow("SELECT * FROM articles,tags WHERE id = ?", id).Scan(
+func GetArticleByID(db *sql.DB, id int) (*Article, *Tag, error) {
+	var (
+		articles Article
+		tags     Tag
+	)
+	if err := db.QueryRow("SELECT * FROM articles WHERE id = ?", id).Scan(
 		&articles.ID,
 		&articles.TagID,
 		&articles.Title,
@@ -64,11 +65,11 @@ func GetArticleByID(db *sql.DB, id int) (result []interface{}, err error) {
 		&articles.State,
 		&articles.DeletedOn,
 	); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if articles.TagID != 0 {
-		if err = db.QueryRow("SELECT FROM tags WHERE id = ?", articles.TagID).Scan(
+		if err := db.QueryRow("SELECT * FROM tags WHERE id = ?", articles.TagID).Scan(
 			&tags.ID,
 			&tags.Name,
 			&tags.CreatedBy,
@@ -78,18 +79,16 @@ func GetArticleByID(db *sql.DB, id int) (result []interface{}, err error) {
 			&tags.State,
 			&tags.DeletedOn,
 		); err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 
-	result = append(result, articles, tags)
-
-	return result, nil
+	return &articles, &tags, nil
 }
 
 // GetArticlesByTag -
-func GetArticlesByTag(db *sql.DB, tagID int) (count int, result []interface{}, err error) {
-	var articles Article
+func GetArticlesByTag(db *sql.DB, tagID int) (count int, articles []*Article, err error) {
+	var article Article
 
 	rows, err := db.Query("SELECT * FROM articles WHERE tag_id = ?", tagID)
 	if err != nil {
@@ -100,23 +99,23 @@ func GetArticlesByTag(db *sql.DB, tagID int) (count int, result []interface{}, e
 	for rows.Next() {
 
 		if err = rows.Scan(
-			&articles.ID,
-			&articles.TagID,
-			&articles.Title,
-			&articles.Desc,
-			&articles.Content,
-			&articles.CreatedBy,
-			&articles.CreatedOn,
-			&articles.UpdatedBy,
-			&articles.UpdatedOn,
-			&articles.State,
-			&articles.DeletedOn,
+			&article.ID,
+			&article.TagID,
+			&article.Title,
+			&article.Desc,
+			&article.Content,
+			&article.CreatedBy,
+			&article.CreatedOn,
+			&article.UpdatedBy,
+			&article.UpdatedOn,
+			&article.State,
+			&article.DeletedOn,
 		); err != nil {
 			return 0, nil, err
 		}
 
-		result = append(result, articles)
+		articles = append(articles, &article)
 	}
 
-	return len(result), result, nil
+	return len(articles), articles, nil
 }

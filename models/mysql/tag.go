@@ -10,9 +10,9 @@ type Tag struct {
 	ID        int
 	Name      string
 	CreatedBy string
-	CreatedOn int
+	CreatedOn string
 	UpdatedBy string
-	UpdatedOn int
+	UpdatedOn string
 	State     bool
 	DeletedOn int
 }
@@ -25,7 +25,7 @@ func AddTag(db *sql.DB, name, createdBy string) (err error) {
 
 // SoftDeleteTag -
 func SoftDeleteTag(db *sql.DB, id int) (err error) {
-	_, err = db.Exec("UPDATE tags SET state = false, delete_on = ? WHERE id = ?", time.Now().Unix(), id)
+	_, err = db.Exec("UPDATE tags SET state = false, deleted_on = ? WHERE id = ?", time.Now().Unix(), id)
 	return err
 }
 
@@ -37,7 +37,7 @@ func HardDeleteTag(db *sql.DB, id int) (err error) {
 
 // EditTag -
 func EditTag(db *sql.DB, name, updateBy string, id int) (err error) {
-	_, err = db.Exec("UPATE tags SET name = ?, updateBy = ? WHERE id = ?", name, updateBy, id)
+	_, err = db.Exec("UPDATE tags SET name = ?, updated_by = ? WHERE id = ?", name, updateBy, id)
 	return err
 }
 
@@ -45,20 +45,20 @@ func EditTag(db *sql.DB, name, updateBy string, id int) (err error) {
 func GetTagByID(db *sql.DB, id int) (result interface{}, err error) {
 	var tags Tag
 
-	if err = db.QueryRow("SELECT FROM tags WHERE id = ?", id).Scan(
+	if err = db.QueryRow("SELECT * FROM tags WHERE id = ?", id).Scan(
 		&tags.ID,
 		&tags.Name,
-		&tags.CreatedBy,
 		&tags.CreatedOn,
-		&tags.UpdatedBy,
+		&tags.CreatedBy,
 		&tags.UpdatedOn,
+		&tags.UpdatedBy,
 		&tags.State,
 		&tags.DeletedOn,
 	); err != nil {
 		return nil, err
 	}
 
-	return tags, nil
+	return &tags, nil
 }
 
 // GetTags -
@@ -85,7 +85,7 @@ func GetTags(db *sql.DB) (count int, result []interface{}, err error) {
 			return 0, nil, err
 		}
 
-		result = append(result, tags)
+		result = append(result, &tags)
 	}
 
 	return len(result), result, nil

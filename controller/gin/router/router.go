@@ -2,8 +2,6 @@ package router
 
 import (
 	"database/sql"
-	"io"
-	"os"
 
 	"github.com/gin-gonic/gin"
 
@@ -15,8 +13,8 @@ import (
 // InitRouter return router
 func InitRouter(db *sql.DB) *gin.Engine {
 
-	f, _ := os.Create("./pkg/log/gin.log")
-	gin.DefaultWriter = io.MultiWriter(f)
+	//	f, _ := os.Create("./pkg/log/gin.log")
+	//	gin.DefaultWriter = io.MultiWriter(f)
 
 	r := gin.Default()
 
@@ -43,7 +41,7 @@ func InitRouter(db *sql.DB) *gin.Engine {
 		apiv1.DELETE("/remove/tag", tagCtl.RemoveTag)
 		apiv1.PUT("/update/tag", tagCtl.EditTag)
 		apiv1.POST("/get/tag", tagCtl.GetTagByID)
-		apiv1.POST("/get/tags", tagCtl.GetTags)
+		//apiv1.POST("/get/tags", tagCtl.GetTags)
 
 		apiv1.POST("/add/article", articleCtl.AddArticle)
 		apiv1.DELETE("/delete/article", articleCtl.DeleteArticle)

@@ -17,13 +17,19 @@ func main() {
 	log.SetFlags(log.Ldate | log.Lshortfile)
 
 	db := mysql.InitModel()
-
 	r := router.InitRouter(db)
 
 	fmt.Println("pid is: ", os.Getpid())
+
+	go func() {
+		if err := http.ListenAndServeTLS(":8081", "./conf/server.crt", "./conf/server.key", r); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	gracehttp.Serve(&http.Server{
 		Addr:    ":8080",
 		Handler: r,
 	})
+
 }

@@ -11,6 +11,12 @@ import (
 	"github.com/facebookgo/grace/gracehttp"
 )
 
+// @title blog-api
+// @version 1.0
+// @description This is a simple trying RESTful-API
+// @termsOfService https://github.com/Mictrlan/blog-api
+// @license.name MIT
+// @license.url https://github.com/Mictrlan/blog-api/blob/master/LICENSE
 func main() {
 	fmt.Println("Hollow World!")
 

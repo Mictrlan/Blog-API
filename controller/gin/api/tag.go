@@ -21,6 +21,13 @@ func NewTagCtl(db *sql.DB) *TagController {
 }
 
 // AddTag -
+// @Summary Add a new tag to the store
+// @Description Add a new tag
+// @Produce json
+// @Param name query string true "Name"
+// @Param created_by query string true "CreatedBy"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/add/tag [post]
 func (tagCtl *TagController) AddTag(ctx *gin.Context) {
 	var (
 		req struct {
@@ -43,6 +50,12 @@ func (tagCtl *TagController) AddTag(ctx *gin.Context) {
 }
 
 // DeleteTag -
+// @Summary softdelete tag by id
+// @Description delete tag by id
+// @Produce json
+// @Param id path int true "ID"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/delete/tag [delete]
 func (tagCtl *TagController) DeleteTag(ctx *gin.Context) {
 	var (
 		req struct {
@@ -64,6 +77,12 @@ func (tagCtl *TagController) DeleteTag(ctx *gin.Context) {
 }
 
 // RemoveTag -
+// @Summary harddelete tag by id
+// @Description remove tag by id
+// @Produce json
+// @Param id path int true "ID"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/remove/tag [delete]
 func (tagCtl *TagController) RemoveTag(ctx *gin.Context) {
 	var (
 		req struct {
@@ -85,6 +104,14 @@ func (tagCtl *TagController) RemoveTag(ctx *gin.Context) {
 }
 
 // EditTag -
+// @Summary update tag by id
+// @Description update tag by id
+// @Produce json
+// @Param id path int true "ID"
+// @Param name query string true "Name"
+// @Param updated_by query string true "UpdateBy"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/update/tag [put]
 func (tagCtl *TagController) EditTag(ctx *gin.Context) {
 	var (
 		req struct {
@@ -108,6 +135,12 @@ func (tagCtl *TagController) EditTag(ctx *gin.Context) {
 }
 
 // GetTagByID -
+// @Summary query an tag information by id
+// @Description tag tag by id
+// @Produce  json
+// @Param id path int true "ID"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router  /api/v1/get/tag [post]
 func (tagCtl *TagController) GetTagByID(ctx *gin.Context) {
 	var (
 		req struct {
@@ -133,6 +166,11 @@ func (tagCtl *TagController) GetTagByID(ctx *gin.Context) {
 }
 
 // GetTags -
+// @Summary query tags information
+// @Description get tags information
+// @Produce json
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router  /api/v1/get/tags [get]
 func (tagCtl *TagController) GetTags(ctx *gin.Context) {
 	count, result, err := mysql.GetTags(tagCtl.db)
 	if err != nil {

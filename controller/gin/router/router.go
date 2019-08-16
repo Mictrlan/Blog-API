@@ -6,8 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/Mictrlan/blog-api/controller/gin/api"
-
 	mw "github.com/Mictrlan/blog-api/controller/gin/middleware"
+
+	// swagger
+	_ "github.com/Mictrlan/blog-api/docs"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // InitRouter return router
@@ -23,6 +27,9 @@ func InitRouter(db *sql.DB) *gin.Engine {
 	articleCtl := api.NewArticleCtl(db)
 
 	r.POST("api/v1/add/auth", authCtl.AddAuth)
+
+	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	AuthMiddleware := mw.Auth(authCtl)
 
@@ -41,7 +48,7 @@ func InitRouter(db *sql.DB) *gin.Engine {
 		apiv1.DELETE("/remove/tag", tagCtl.RemoveTag)
 		apiv1.PUT("/update/tag", tagCtl.EditTag)
 		apiv1.POST("/get/tag", tagCtl.GetTagByID)
-		apiv1.POST("/get/tags", tagCtl.GetTags)
+		apiv1.GET("/get/tags", tagCtl.GetTags)
 
 		apiv1.POST("/add/article", articleCtl.AddArticle)
 		apiv1.DELETE("/delete/article", articleCtl.DeleteArticle)

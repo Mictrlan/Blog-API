@@ -21,6 +21,16 @@ func NewArticleCtl(db *sql.DB) *ArticleController {
 }
 
 // AddArticle -
+// @Summary Add a new article to the store
+// @Description Add a new article
+// @Produce json
+// @Param tag_id query int false "TagID"
+// @Param title query string true "Title"
+// @Param description query false true "Desc"
+// @Param content query string false "Content"
+// @Param created_by query string true "CreatedBy"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/add/article [post]
 func (articleCtl *ArticleController) AddArticle(ctx *gin.Context) {
 	var (
 		req struct {
@@ -46,6 +56,12 @@ func (articleCtl *ArticleController) AddArticle(ctx *gin.Context) {
 }
 
 // DeleteArticle -
+// @Summary softdelete article by id
+// @Description delete article by id
+// @Produce json
+// @Param id path int true "ID"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/delete/article [delete]
 func (articleCtl *ArticleController) DeleteArticle(ctx *gin.Context) {
 	var (
 		req struct {
@@ -67,6 +83,12 @@ func (articleCtl *ArticleController) DeleteArticle(ctx *gin.Context) {
 }
 
 // RemoveArticle -
+// @Summary harddelete article by id
+// @Description remove article by id
+// @Produce json
+// @Param id path int true "ID"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/remove/article [delete]
 func (articleCtl *ArticleController) RemoveArticle(ctx *gin.Context) {
 	var (
 		req struct {
@@ -88,6 +110,17 @@ func (articleCtl *ArticleController) RemoveArticle(ctx *gin.Context) {
 }
 
 // EditArticle -
+// @Summary update article by id
+// @Description update article by id
+// @Produce json
+// @Param id path int true "ID"
+// @Param tag_id query int false "TagID"
+// @Param title query int true "Title"
+// @Param description query false true "Desc"
+// @Param content query string false "Content"
+// @Param updated_by query string true "UpdateBy"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/update/article [put]
 func (articleCtl *ArticleController) EditArticle(ctx *gin.Context) {
 	var (
 		req struct {
@@ -136,6 +169,12 @@ func (articleCtl *ArticleController) EditArticle(ctx *gin.Context) {
 }
 
 // GetArticleByID -
+// @Summary query an article information by id
+// @Description article tag by id
+// @Produce  json
+// @Param id path int true "ID"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router  /api/v1/get/article [post]
 func (articleCtl *ArticleController) GetArticleByID(ctx *gin.Context) {
 	var (
 		req struct {
@@ -162,6 +201,12 @@ func (articleCtl *ArticleController) GetArticleByID(ctx *gin.Context) {
 }
 
 // GetArticleByTagID -
+// @Summary query articles information
+// @Description get articles by tag_id
+// @Produce json
+// @Param tag_id path int true "TagID"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router  /api/v1/get/articles [post]
 func (articleCtl *ArticleController) GetArticleByTagID(ctx *gin.Context) {
 	var (
 		req struct {

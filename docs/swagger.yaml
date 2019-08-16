@@ -2,9 +2,337 @@ basePath: '{{.BasePath}}'
 host: '{{.Host}}'
 info:
   contact: {}
-  description: '{{.Description}}'
-  license: {}
-  title: '{{.Title}}'
-  version: '{{.Version}}'
-paths: {}
+  description: This is a simple trying RESTful-API
+  license:
+    name: MIT
+    url: https://github.com/Mictrlan/blog-api/blob/master/LICENSE
+  termsOfService: https://github.com/Mictrlan/blog-api
+  title: blog-api
+  version: "1.0"
+paths:
+  /api/v1/add/article:
+    post:
+      description: Add a new article
+      parameters:
+      - description: TagID
+        in: query
+        name: tag_id
+        type: integer
+      - description: Title
+        in: query
+        name: title
+        required: true
+        type: string
+      - description: Desc
+        in: query
+        name: description
+        required: true
+        type: "false"
+      - description: Content
+        in: query
+        name: content
+        type: string
+      - description: CreatedBy
+        in: query
+        name: created_by
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: Add a new article to the store
+  /api/v1/add/auth:
+    post:
+      description: Add a new user for verification
+      parameters:
+      - description: username
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: Add a new user
+  /api/v1/add/tag:
+    post:
+      description: Add a new tag
+      parameters:
+      - description: Name
+        in: query
+        name: name
+        required: true
+        type: string
+      - description: CreatedBy
+        in: query
+        name: created_by
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: Add a new tag to the store
+  /api/v1/delete/article:
+    delete:
+      description: delete article by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: softdelete article by id
+  /api/v1/delete/tag:
+    delete:
+      description: delete tag by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: softdelete tag by id
+  /api/v1/get/article:
+    post:
+      description: article tag by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: query an article information by id
+  /api/v1/get/articles:
+    post:
+      description: get articles by tag_id
+      parameters:
+      - description: TagID
+        in: path
+        name: tag_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: query articles information
+  /api/v1/get/tag:
+    post:
+      description: tag tag by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: query an tag information by id
+  /api/v1/get/tags:
+    get:
+      description: get tags information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: query tags information
+  /api/v1/login:
+    post:
+      description: User login
+      parameters:
+      - description: username
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: User login
+  /api/v1/modifyPwd:
+    put:
+      description: Modify user password
+      parameters:
+      - description: Username
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: PwdNew
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: Confirm
+        in: query
+        name: confirm
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: Modify user password
+  /api/v1/remove/article:
+    delete:
+      description: remove article by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: harddelete article by id
+  /api/v1/remove/tag:
+    delete:
+      description: remove tag by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: harddelete tag by id
+  /api/v1/update/article:
+    put:
+      description: update article by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: TagID
+        in: query
+        name: tag_id
+        type: integer
+      - description: Title
+        in: query
+        name: title
+        required: true
+        type: integer
+      - description: Desc
+        in: query
+        name: description
+        required: true
+        type: "false"
+      - description: Content
+        in: query
+        name: content
+        type: string
+      - description: UpdateBy
+        in: query
+        name: updated_by
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: update article by id
+  /api/v1/update/tag:
+    put:
+      description: update tag by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Name
+        in: query
+        name: name
+        required: true
+        type: string
+      - description: UpdateBy
+        in: query
+        name: updated_by
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: update tag by id
 swagger: "2.0"

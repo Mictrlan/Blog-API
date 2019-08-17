@@ -1,6 +1,8 @@
 package util
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"golang.org/x/crypto/bcrypt"
+)
 
 // SaltHashGenerate encrypts user passwords
 func SaltHashGenerate(password string) (string, error) {

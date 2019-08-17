@@ -36,5 +36,13 @@ var (
 			deleted_on     INT(11) UNSIGNED DEFAULT 0,
 			PRIMARY KEY (id)
 		  )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;`,
+
+		`CREATE TABLE IF NOT EXISTS files (
+			article_id     INTEGER UNSIGNED NOT NULL,
+			md5         VARCHAR(512) DEFAULT ' ',
+			path        VARCHAR(512) DEFAULT ' ',
+			created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (md5)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;`,
 	}
 )

@@ -25,13 +25,15 @@ func main() {
 	db := mysql.InitModel()
 	r := router.InitRouter(db)
 
-	fmt.Println("pid is: ", os.Getpid())
-
+	// https
 	go func() {
 		if err := http.ListenAndServeTLS(":8081", "./conf/server.crt", "./conf/server.key", r); err != nil {
 			log.Fatal(err)
 		}
 	}()
+
+	//Graceful Restart
+	fmt.Println("pid is: ", os.Getpid())
 
 	gracehttp.Serve(&http.Server{
 		Addr:    ":8080",

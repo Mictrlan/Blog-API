@@ -502,6 +502,32 @@
                     }
                 }
             }
+        },
+        "/api/v1/upload": {
+            "post": {
+                "description": "upload files",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sort and upload files",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ArticleID",
+                        "name": "articles_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"stauts\":200,\"message\":\"OK\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     }
 }

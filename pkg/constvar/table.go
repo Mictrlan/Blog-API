@@ -38,10 +38,10 @@ var (
 		  )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;`,
 
 		`CREATE TABLE IF NOT EXISTS files (
-			article_id     INTEGER UNSIGNED NOT NULL,
-			md5         VARCHAR(512) DEFAULT ' ',
-			path        VARCHAR(512) DEFAULT ' ',
-			created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+			article_id  INTEGER UNSIGNED NOT NULL,
+			path         VARCHAR(512) DEFAULT ' ',
+			md5        VARCHAR(512) DEFAULT ' ',
+			created_on  DATETIME DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (md5)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;`,
 	}

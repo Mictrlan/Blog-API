@@ -6,8 +6,8 @@ import (
 )
 
 // Insert  add file info to table
-func Insert(db *sql.DB, articleID int, path, md5 string) error {
-	result, err := db.Exec("INSERT INTO files(article_id,md5,path,created_at) VALUES (?,?,?,?)", articleID, path, md5, time.Now())
+func Insert(db *sql.DB, articleID int, md5, path string) error {
+	result, err := db.Exec("INSERT INTO files(article_id,md5,path,created_on) VALUES (?,?,?,?)", articleID, md5, path, time.Now())
 	if err != nil {
 		return err
 	}

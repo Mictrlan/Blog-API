@@ -26,6 +26,12 @@ func NewUploandCtl(db *sql.DB, URL string) *UploadController {
 }
 
 // Upload -
+// @Summary Sort and upload files
+// @Description upload files
+// @Produce json
+// @Param articles_id path string true "ArticleID"
+// @Success 200 {string} json "{"stauts":200,"message":"OK"}"
+// @Router /api/v1/upload [post]
 func (uploadCtl *UploadController) Upload(ctx *gin.Context) {
 	if ctx.Request.Method != "POST" {
 		ctx.JSON(http.StatusMethodNotAllowed, gin.H{"status": http.StatusMethodNotAllowed})
@@ -43,7 +49,7 @@ func (uploadCtl *UploadController) Upload(ctx *gin.Context) {
 		return
 	}
 
-	file, header, err := ctx.Request.FormFile("file")
+	file, header, err := ctx.Request.FormFile(upload.FileKey)
 	defer func() {
 		file.Close()
 		ctx.Request.MultipartForm.RemoveAll()
@@ -82,7 +88,7 @@ func (uploadCtl *UploadController) Upload(ctx *gin.Context) {
 		return
 	}
 
-	if err = mysql.Insert(uploadCtl.db, req.ArticleID, filePath, md5); err != nil {
+	if err = mysql.Insert(uploadCtl.db, req.ArticleID, md5, filePath); err != nil {
 		ctx.AbortWithError(http.StatusNotModified, err)
 	}
 

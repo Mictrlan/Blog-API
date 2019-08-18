@@ -335,4 +335,21 @@ paths:
           schema:
             type: string
       summary: update tag by id
+  /api/v1/upload:
+    post:
+      description: upload files
+      parameters:
+      - description: ArticleID
+        in: path
+        name: articles_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"stauts":200,"message":"OK"}'
+          schema:
+            type: string
+      summary: Sort and upload files
 swagger: "2.0"

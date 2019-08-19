@@ -35,6 +35,7 @@ func main() {
 	//Graceful Restart
 	fmt.Println("pid is: ", os.Getpid())
 
+	// If you want to deploy this service to dokcer, you should keep Addr and Dockerfile_EXPOSE consistent
 	gracehttp.Serve(&http.Server{
 		Addr:    ":8080",
 		Handler: r,
